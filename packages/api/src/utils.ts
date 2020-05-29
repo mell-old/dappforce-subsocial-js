@@ -52,10 +52,8 @@ export const getSharedPostId = (postData: any): PostId | undefined => {
   return sharedPostId
 }
 
-type HasPostStruct = PostData
-
 /** Return original post id from shared post or root post id if this post is a comment. */
-export const getPostIdFromExtension = (postData?: HasPostStruct): PostId | undefined => {
+export const getPostIdFromExtension = (postData?: any): PostId | undefined => {
   if (!postData) return undefined;
 
   const ext = postData.struct.extension
