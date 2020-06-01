@@ -34,7 +34,7 @@ async function loadRelatedStructs (posts: PostData[], finders: FindStructsFns, o
   const spaceIds: SpaceId[] = []
 
   // Post id can be either extension or root post
-  const rememberPostIdAndMapToPostIndices = (post: PostData, posts: PostData[], postIds: PostId[]) => {
+  const rememberPostId = (post: PostData, posts: PostData[], postIds: PostId[]) => {
     const extId = getPostIdFromExtension(post)
     const extIdStr = extId?.toString()
     if (extId && nonEmptyStr(extIdStr)) {
@@ -48,23 +48,23 @@ async function loadRelatedStructs (posts: PostData[], finders: FindStructsFns, o
   }
 
   // Related id can be either space id or owner id
-  function rememberRelatedIdAndMapToPostIndices<T extends SpaceId | AccountId> (relatedId: T, relatedIds: T[]) {
+  function rememberRelatedId<T extends SpaceId | AccountId> (relatedId: T, relatedIds: T[]) {
     if (isDefined(relatedId)) {
       relatedIds.push(relatedId)
     }
   }
 
   posts.forEach((post) => {
-    rememberPostIdAndMapToPostIndices(post, extPosts, extIds)
+    rememberPostId(post, extPosts, extIds)
 
     if (withOwner) {
       const ownerId = post.struct.created.account
-      rememberRelatedIdAndMapToPostIndices(ownerId, ownerIds)
+      rememberRelatedId(ownerId, ownerIds)
     }
 
     if (withSpace) {
       const spaceId = post.struct.space_id.unwrapOr(undefined)
-      spaceId && rememberRelatedIdAndMapToPostIndices(spaceId, spaceIds)
+      spaceId && rememberRelatedId(spaceId, spaceIds)
     }
   })
 
@@ -84,7 +84,7 @@ async function loadRelatedStructs (posts: PostData[], finders: FindStructsFns, o
       if (isDefined(spaceId)) {
         spaceIds.push(spaceId)
       } else {
-        rememberPostIdAndMapToPostIndices(post, rootPosts, rootIds)
+        rememberPostId(post, rootPosts, rootIds)
       }
     }
   })
@@ -97,7 +97,7 @@ async function loadRelatedStructs (posts: PostData[], finders: FindStructsFns, o
     postByIdMap.set(post.struct.id.toString(), post)
     if (withSpace) {
       const spaceId = post.struct.space_id.unwrapOr(undefined)
-      spaceId && rememberRelatedIdAndMapToPostIndices(spaceId, spaceIds)
+      spaceId && rememberRelatedId(spaceId, spaceIds)
     }
   })
 
