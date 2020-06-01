@@ -7,6 +7,7 @@ import { mockAccountAlice, mockAccountBob } from './AccountMocks';
 import { PostData } from '@subsocial/types/src';
 
 import { PostExtension, OptionId, CommentExt } from '@subsocial/types/src/substrate/classes';
+import { mockSpaceDataAlice, mockSpaceDataBob } from './SpaceMocks';
 
 let _id = 0
 const nextId = (): PostId => new BN(++_id) as PostId
@@ -138,3 +139,37 @@ export const mockPostsData: PostData[] = [
   mockSharedCommentData,
   mockCommentOnSharedPostData
 ]
+
+export const mockRegularPostDataStruct = {
+  post: mockRegularPostData,
+  owner: mockSpaceDataAlice,
+  space: mockSpaceDataAlice
+}
+
+export const mockSharedPostDataStruct = {
+  post: mockRegularPostData,
+  ext: mockRegularPostDataStruct,
+  owner: mockSpaceDataBob,
+  space: mockSpaceDataBob
+}
+
+export const mockCommentOnRegularPostDataStruct = {
+  post: mockRegularPostData,
+  ext: mockRegularPostDataStruct,
+  owner: mockSpaceDataAlice,
+  space: mockSpaceDataAlice
+}
+
+export const mockSharedCommentDataStruct = {
+  post: mockRegularPostData,
+  ext: mockCommentOnRegularPostDataStruct,
+  owner: mockSpaceDataBob,
+  space: mockSpaceDataAlice
+}
+
+export const mockCommentOnSharedPostDataStruct = {
+  post: mockRegularPostData,
+  ext: mockSharedPostDataStruct,
+  owner: mockSpaceDataAlice,
+  space: mockSpaceDataBob
+}
