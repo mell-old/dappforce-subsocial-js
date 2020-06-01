@@ -2,7 +2,8 @@ import { AnySpaceId, AnyAccountId } from '@subsocial/types/substrate/interfaces/
 import { PostData, PostWithSomeDetails, ProfileData, SpaceData, AnyPostId } from '@subsocial/types'
 import { PostId, AccountId, SpaceId } from '@subsocial/types/substrate/interfaces'
 import { getPostIdFromExtension } from './utils'
-import { nonEmptyStr, notDefined, isDefined } from '@subsocial/utils'
+import { nonEmptyStr, isDefined, isEmptyStr } from '@subsocial/utils'
+import { CommentExt } from '@subsocial/types/src/substrate/classes';
 
 export type FindStructsFns = {
   findPosts: (ids: AnyPostId[]) => Promise<PostData[]>,
@@ -24,9 +25,6 @@ async function loadRelatedStructs (posts: PostData[], finders: FindStructsFns, o
   const postByIdMap = new Map<string, PostData>()
   posts.forEach(x => postByIdMap.set(x.struct.id.toString(), x))
 
-  const postStructs: PostWithSomeDetails[] = []
-  const extPostStructs: PostWithSomeDetails[] = []
-
   const rootPosts: PostData[] = []
   const extPosts: PostData[] = []
 
@@ -35,84 +33,46 @@ async function loadRelatedStructs (posts: PostData[], finders: FindStructsFns, o
   const ownerIds: AccountId[] = []
   const spaceIds: SpaceId[] = []
 
-  // Key - serialized id of root post of comment.
-  // Value - indices of the posts that have this root post in `extPostStructs` array.
-  const postIndicesByRootIdMap = new Map<string, number[]>()
-  // Key - serialized id of a shared original post or root post of a comment.
-  // Value - indices of the posts that share this original post or comments that are replies to root post in postStructs array.
-  const postIndicesByExtIdMap = new Map<string, number[]>()
-  // Key - serialized id of a post owner.
-  // Value - indices of the posts that have the same owner (as key) in `posts` array.
-  const postIndicesByOwnerIdMap = new Map<string, number[]>()
-  // Key - serialized id of a space.
-  // Value - indices of the posts that have the same space (as key) in `posts` array.
-  const postIndicesBySpaceIdMap = new Map<string, number[]>()
-
   // Post id can be either extension or root post
-  const rememberPostIdAndMapToPostIndices = (post: PostData, postIndex: number, resultIndicesByPostIdMap: Map<string, number[]>, posts: PostData[], postIds: PostId[]) => {
+  const rememberPostIdAndMapToPostIndices = (post: PostData, posts: PostData[], postIds: PostId[]) => {
     const extId = getPostIdFromExtension(post)
     const extIdStr = extId?.toString()
     if (extId && nonEmptyStr(extIdStr)) {
-      let postIdxs = resultIndicesByPostIdMap.get(extIdStr)
-      if (notDefined(postIdxs)) {
-        postIdxs = []
-        resultIndicesByPostIdMap.set(extIdStr, postIdxs)
-        const currentPost = postByIdMap.get(extIdStr)
-        if (currentPost) {
-          posts.push(currentPost)
-        } else {
-          postIds.push(extId)
-        }
+      const currentPost = postByIdMap.get(extIdStr)
+      if (currentPost) {
+        posts.push(currentPost)
+      } else {
+        postIds.push(extId)
       }
-      postIdxs.push(postIndex)
     }
   }
 
   // Related id can be either space id or owner id
-  function rememberRelatedIdAndMapToPostIndices<T extends SpaceId | AccountId> (relatedId: T, postIndex: number, postIndicesByRelatedIdMap: Map<string, number[]>, relatedIds: T[]) {
+  function rememberRelatedIdAndMapToPostIndices<T extends SpaceId | AccountId> (relatedId: T, relatedIds: T[]) {
     if (isDefined(relatedId)) {
-      const idStr = relatedId.toString()
-      let postIdxs = postIndicesByRelatedIdMap.get(idStr)
-      if (notDefined(postIdxs)) {
-        postIdxs = []
-        postIndicesByOwnerIdMap.set(idStr, postIdxs)
-        relatedIds.push(relatedId)
-      }
-      postIdxs.push(postIndex)
+      relatedIds.push(relatedId)
     }
   }
 
-  function setExtOnPost (ext: PostWithSomeDetails, resultIndicesByPostIdMap: Map<string, number[]>, postStructs: PostWithSomeDetails[]) {
-    const extId = ext.post.struct.id.toString()
-    postByIdMap.set(extId, ext.post)
-    const idxs = resultIndicesByPostIdMap.get(extId) || []
-    idxs.forEach(idx => {
-      postStructs[idx].ext = ext
-    })
-  }
-
-  posts.forEach((post, i) => {
-    postStructs.push({ post })
-
-    rememberPostIdAndMapToPostIndices(post, i, postIndicesByExtIdMap, extPosts, extIds)
+  posts.forEach((post) => {
+    rememberPostIdAndMapToPostIndices(post, extPosts, extIds)
 
     if (withOwner) {
       const ownerId = post.struct.created.account
-      rememberRelatedIdAndMapToPostIndices(ownerId, i, postIndicesByOwnerIdMap, ownerIds)
+      rememberRelatedIdAndMapToPostIndices(ownerId, ownerIds)
     }
 
     if (withSpace) {
       const spaceId = post.struct.space_id.unwrapOr(undefined)
-      spaceId && rememberRelatedIdAndMapToPostIndices(spaceId, i, postIndicesBySpaceIdMap, spaceIds)
+      spaceId && rememberRelatedIdAndMapToPostIndices(spaceId, spaceIds)
     }
   })
 
   const loadedExtPosts = await findPosts(extIds)
   extPosts.push(...loadedExtPosts)
+  extPosts.forEach(x => postByIdMap.set(x.struct.id.toString(), x))
 
-  extPosts.forEach((post, i) => {
-    extPostStructs.push({ post })
-    setExtOnPost(extPostStructs[i], postIndicesByExtIdMap, postStructs)
+  extPosts.forEach((post) => {
 
     if (withOwner) {
       const ownerId = post.struct.created.account
@@ -124,20 +84,20 @@ async function loadRelatedStructs (posts: PostData[], finders: FindStructsFns, o
       if (isDefined(spaceId)) {
         spaceIds.push(spaceId)
       } else {
-        rememberPostIdAndMapToPostIndices(post, i, postIndicesByRootIdMap, rootPosts, rootIds)
+        rememberPostIdAndMapToPostIndices(post, rootPosts, rootIds)
       }
     }
   })
 
   const loadedRootPosts = await findPosts(rootIds)
   rootPosts.push(...loadedRootPosts)
+  rootPosts.forEach(x => postByIdMap.set(x.struct.id.toString(), x))
 
-  rootPosts.forEach((post, i) => {
-    setExtOnPost({ post }, postIndicesByRootIdMap, extPostStructs)
-
+  rootPosts.forEach((post) => {
+    postByIdMap.set(post.struct.id.toString(), post)
     if (withSpace) {
       const spaceId = post.struct.space_id.unwrapOr(undefined)
-      spaceId && rememberRelatedIdAndMapToPostIndices(spaceId, i, postIndicesBySpaceIdMap, spaceIds)
+      spaceId && rememberRelatedIdAndMapToPostIndices(spaceId, spaceIds)
     }
   })
 
@@ -162,7 +122,7 @@ async function loadRelatedStructs (posts: PostData[], finders: FindStructsFns, o
   }
 
   return {
-    postStructs,
+    postByIdMap,
     spaceByIdMap,
     ownerByIdMap
   }
@@ -174,8 +134,31 @@ export async function loadAndSetPostRelatedStructs (posts: PostData[], finders: 
   const {
     spaceByIdMap,
     ownerByIdMap,
-    postStructs
+    postByIdMap
   } = await loadRelatedStructs(posts, finders, opts)
+
+  const setExtOnPost = (postStruct: PostWithSomeDetails) => {
+    const { post } = postStruct
+    const extId = getPostIdFromExtension(post)
+    const extIdStr = extId?.toString()
+    if (!extId || isEmptyStr(extIdStr)) return
+
+    const currentPost = postByIdMap.get(extIdStr)
+
+    if (!currentPost) return
+    postStruct.ext = { post: currentPost }
+  }
+
+  const setExtAndRootOnPost = (postStruct: PostWithSomeDetails) => {
+    setExtOnPost(postStruct)
+    const { ext } = postStruct
+    if (!ext) return
+
+    const { post: { struct: { extension } } } = ext
+    if (!extension.isComment && !(extension.value instanceof CommentExt)) return
+
+    setExtOnPost(ext)
+  }
 
   const setOwnerOnPost = (postStruct: PostWithSomeDetails) => {
     if (!withOwner) return
@@ -206,22 +189,31 @@ export async function loadAndSetPostRelatedStructs (posts: PostData[], finders: 
     }
   }
 
-  postStructs.forEach(post => {
-    const { post: { struct: { space_id } }, ext } = post
-    setOwnerOnPost(post)
+  const postStructs: PostWithSomeDetails[] = []
+
+  posts.forEach(post => {
+    const postStruct = { post } as PostWithSomeDetails
+
+    // Set a extension and root post if the post has them:
+    setExtAndRootOnPost(postStruct)
+
+    setOwnerOnPost(postStruct)
+
+    const { post: { struct: { space_id } }, ext } = postStruct
 
     // Set a space if the post has space id:
-    setSpaceOnPost(post, space_id.unwrapOr(undefined))
+    setSpaceOnPost(postStruct, space_id.unwrapOr(undefined))
 
     // Set a space (from extension) on post and its extension if extension has space id:
     const spaceId = ext?.post.struct.space_id.unwrapOr(undefined)
-    setSpaceOnPost(post, spaceId, ext)
-
+    setSpaceOnPost(postStruct, spaceId, ext)
     if (!spaceId) {
       // Set a space (from root post) on post and its extension if extension does NOT have space id:
       const spaceId = ext?.ext?.post.struct.space_id.unwrapOr(undefined)
-      setSpaceOnPost(post, spaceId, ext)
+      setSpaceOnPost(postStruct, spaceId, ext)
     }
+
+    postStructs.push(postStruct)
   })
 
   return postStructs

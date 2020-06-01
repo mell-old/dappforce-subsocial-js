@@ -1,8 +1,8 @@
-import { CommentExt } from '@subsocial/types/substrate/classes';
-import { IpfsCid, SubstrateId, AnyAccountId, CommonStruct } from '@subsocial/types';
+import { CommentExt } from '@subsocial/types/src/substrate/classes';
+import { IpfsCid, SubstrateId, AnyAccountId, CommonStruct } from '@subsocial/types/src';
 import { newLogger, isEmptyArray, nonEmptyStr } from '@subsocial/utils';
-import { PostId, AccountId, ReactionId, SocialAccount, Reaction } from '@subsocial/types/substrate/interfaces';
-import registry from '@subsocial/types/substrate/registry';
+import { PostId, AccountId, ReactionId, SocialAccount, Reaction } from '@subsocial/types/src/substrate/interfaces';
+import registry from '@subsocial/types/src/substrate/registry';
 import { GenericAccountId } from '@polkadot/types'
 
 const log = newLogger('Subsocial Api Utils');
