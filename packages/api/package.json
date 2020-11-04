@@ -1,9 +1,8 @@
 {
-  "name": "@subsocial/utils",
-  "version": "0.4.11-beta3",
-  "description": "JavaScript utils for Subsocial blockchain.",
+  "name": "@subsocial/api",
+  "version": "0.4.11-beta1",
+  "description": "JavaScript API for Subsocial blockchain.",
   "author": "DappForce contributors",
-  "main": "dist/index.js",
   "license": "GPL-3.0-only",
   "publishConfig": {
     "access": "public",
@@ -18,21 +17,13 @@
   },
   "homepage": "https://github.com/dappforce/dappforce-subsocial-js",
   "dependencies": {
-    "@babel/runtime": "^7.8.4",
-    "bn.js": "^5.1.1",
-    "chalk": "^3.0.0",
-    "circular-json": "^0.5.9",
-    "dotenv": "^8.0.0",
-    "lodash.isempty": "^4.4.0",
-    "lodash.truncate": "^4.4.2",
-    "loglevel": "^1.7.0",
-    "loglevel-plugin-prefix": "^0.8.4"
+    "@polkadot/api": "^1.28.1",
+    "@subsocial/utils": "^0.1.24-beta2",
+    "axios": "^0.19.2"
   },
   "devDependencies": {
-    "@types/circular-json": "^0.4.0",
-    "@types/lodash.isempty": "^4.4.6",
-    "@types/lodash.truncate": "^4.4.6",
-    "@types/loglevel": "^1.6.3"
+    "@types/axios": "^0.14.0",
+    "@subsocial/types": "latest"
   },
   "scripts": {
     "build": "tsc",
@@ -43,6 +34,7 @@
     "subsocial",
     "substrate",
     "polkadot",
-    "kusama"
+    "kusama",
+    "ipfs"
   ]
 }

@@ -1,0 +1,17 @@
+
+{
+  "extends": "./packages/config/tsconfig",
+  "exclude": [
+    "dist/**/*",
+    "**/dist/**/*",
+    "**/test/**/*",
+    "**/scripts/**/*"
+  ],
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "typeRoots": [
+      "./node_modules/@polkadot/ts",
+      "./node_modules/@types"
+    ],
+  }
+}

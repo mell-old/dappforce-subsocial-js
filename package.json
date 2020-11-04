@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "lerna run build",
+    "build:types": "lerna run build --scope=@subsocial/types --include-filtered-dependencies",
+    "build:api": "lerna run build --scope=@subsocial/api --include-filtered-dependencies",
+    "build:utils": "lerna run build --scope=@subsocial/utils --include-filtered-dependencies",
+    "build:interfaces": "node -r ts-node/register packages/types/scripts/generate",
+    "clean:modules": "lerna clean",
+    "clean:dist": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
+    "clean": "lerna clean && yarn clean:dist",
+    "publish:types": "./scripts/publish-types.sh",
+    "publish:utils": "./scripts/publish-utils.sh",
+    "publish:api": "./scripts/publish-api.sh"
+  },
+  "devDependencies": {
+    "lerna": "^2.11.0",
+    "ts-node": "^9.0.0"
+  },
+  "dependencies": {
+    "typescript": "^4.0.5"
+  }
+}
