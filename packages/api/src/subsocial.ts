@@ -68,7 +68,14 @@ export class SubsocialApi extends BasicSubsocialApi {
 
   // Functions that return a single element
 
-  /** Find and load a public space that has `hidden == false` field in Substrate struct and its IPFS content is not empty. */
+  /** Find and load a public space that has `hidden == false` field in Substrate struct and its IPFS content is not empty. 
+   *
+   * @param id - Identification Number for desired Space
+   * 
+   * @returns Substrate structure containing Space data and JSON data stored on IPFS.
+   * If no corresponding Space to given id, undefined is returned
+   *  
+   */
   async findPublicSpace (id: AnySpaceId) {
     return getFirstOrUndefined(await this.findPublicSpaces([ id ]))
   }
@@ -78,7 +85,13 @@ export class SubsocialApi extends BasicSubsocialApi {
     return getFirstOrUndefined(await this.findUnlistedSpaces([ id ]))
   }
 
-  /** Find and load a public post that has `hidden == false` field in Substrate struct and its IPFS content is not empty. */
+  /** Find and load a public post that has `hidden == false` field in Substrate struct and its IPFS content is not empty. 
+   * 
+   * @param id - Identification Number for desired Post
+   * 
+   * @returns Subtrate structure containing Post data and JSON data stored on IPFS.
+   * If no corresponding Post to given id, undefined is returned
+  */
   async findPublicPost (id: AnySpaceId) {
     return getFirstOrUndefined(await this.findPublicPosts([ id ]))
   }

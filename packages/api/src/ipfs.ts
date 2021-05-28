@@ -175,10 +175,26 @@ export class SubsocialIpfsApi {
     return content[cid.toString()]
   }
 
+  /**
+   * Find and load Space data stored on IPFS, using CID
+   * 
+   * @param cid - Content Identification number (hash) of the Space content stored on IPFS
+   * 
+   * @returns JSON object of stored Space data on IPFS, such as images, links, owner.
+   * If no content exists with given CID, undefined is returned
+   */
   async findSpace (cid: IpfsCid): Promise<SpaceContent | undefined> {
     return this.getContent<SpaceContent>(cid, 'space')
   }
 
+  /**
+   * Find and load Post data stored on IPFS, using CID
+   * 
+   * @param cid - Content Identification number (hash) of the Post content stored on IPFS
+   * 
+   * @returns JSON object of stored Post data on IPFS, such as title, author, tags, text body.
+   * If no content exits with given CID, undefined is returned
+   */
   async findPost (cid: IpfsCid): Promise<PostContent | undefined> {
     return this.getContent<PostContent>(cid, 'post')
   }

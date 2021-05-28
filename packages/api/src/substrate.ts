@@ -140,10 +140,28 @@ export class SubsocialSubstrateApi {
   // ---------------------------------------------------------------------
   // Single
 
+  /**
+   * Find and load Space data from Substrate database, given id and visibility
+   * 
+   * @param id - Identification number of required Space
+   * @param visibility - Option to filter listed or unlisted (hidden) Spaces 
+   * 
+   * @returns Substrate structure containing runtime information about the specified Space such as block hash, method used and timestamp.
+   * If no Space corresponds to given id, undefined is returned.
+   */
   async findSpace ({ id, visibility }: FindSpaceQuery): Promise<Space | undefined> {
     return getFirstOrUndefined(await this.findSpaces({ ids: [ id ], visibility }))
   }
 
+  /**
+   * Find and load Post data from Substrate database, given id and visibility
+   * 
+   * @param id - Identification number of required Post
+   * @param visibility - Option to filter listed or unlisted (hidden) Posts 
+   *
+   * @returns Substrate structure containing runtime information about the specified Post such as method used, owner and timestamp.
+   * If no Post corresponds to given id, undefined is returned.
+   */
   async findPost ({ id, visibility }: FindPostQuery): Promise<Post | undefined> {
     return getFirstOrUndefined(await this.findPosts({ ids: [ id ], visibility }))
   }
