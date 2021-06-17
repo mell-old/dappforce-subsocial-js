@@ -118,21 +118,63 @@ export class SubsocialSubstrateApi {
     }
   }
 
+  /**
+   * Find and load an array of information about spaces from Subsocial blockchain
+   * by a given array of `ids` and `visibility` filter.
+   * 
+   * The four states of visibility are `onlyVisible`, `onlyHidden`, `onlyPublic` and `onlyUnlisted`. 
+   * These states are explained thoroughly in the 'types' section of the documentation.
+   * 
+   * @param ids - An array of ids of desired spaces.
+   * @param visibility - Filter for visible state of the spaces.
+   *
+   * @returns An array of data about desired spaces from Subsocial blockchain. If no corresponding spaces to given array of `ids` and `visibility`, an empty array is returned.
+   * 
+   */
   async findSpaces ({ ids, visibility }: FindSpacesQuery): Promise<Space[]> {
     const spaces: Space[] = await this.findStructs({ pallet: 'spaces', storage: 'spaceById' }, ids);
     return VisibilityFilter<Space>(spaces, visibility)
   }
 
+  /**
+   * Find and load an array of information about posts from Subsocial blockchain
+   * by a given array of `ids` and `visibility` filter.
+   * 
+   * The four states of visibility are `onlyVisible`, `onlyHidden`, `onlyPublic` and `onlyUnlisted`. 
+   * These states are explained thoroughly in the 'types' section of the documentation.
+   * 
+   * @param ids - An array of ids of desired posts.
+   * @param visibility - Filter for visible state of the posts.
+   *
+   * @returns An array of data about desired posts from Subsocial blockchain. If no corresponding posts to given array of `ids` and `visibility`, an empty array is returned.
+   * 
+   */
   async findPosts ({ ids, visibility }: FindPostsQuery): Promise<Post[]> {
     const posts: Post[] = await this.findStructs({ pallet: 'posts', storage: 'postById' }, ids);
     return VisibilityFilter<Post>(posts, visibility)
   }
 
+  /**
+   * Find and load an array of information about social profiles from Subsocial blockchain by a given array of `ids`.
+   * 
+   * @param ids - An array of ids of desired profiles.
+   *
+   * @returns An array of data about desired profiles from Subsocial blockchain. If no corresponding profiles to given array of `ids`, an empty array is returned.
+   * 
+   */
   async findSocialAccounts (ids: AnyAccountId[]): Promise<SocialAccountWithId[]> {
     const accountIds = ids.map(id => asAccountId(id)).filter(x => typeof x !== 'undefined') as AccountId[]
     return this.findStructs({ pallet: 'profiles', storage: 'socialAccountById' }, accountIds);
   }
 
+  /**
+   * Find and load an array of information about reactions from Subsocial blockchain by a given array of `ids`.
+   * 
+   * @param ids - An array of ids of desired reactions.
+   *
+   * @returns An array of data about desired reactions from Subsocial blockchain. If no corresponding reactions to given array of `ids`, an empty array is returned.
+   * 
+   */
   async findReactions (ids: AnyReactionId[]): Promise<Reaction[]> {
     return this.findStructs({ pallet: 'reactions', storage: 'reactionById' }, ids);
   }
@@ -140,18 +182,58 @@ export class SubsocialSubstrateApi {
   // ---------------------------------------------------------------------
   // Single
 
+  /**
+   * Find and load information about a space from Subsocial blockchain by a given `id` and `visibility` filter.
+   * 
+   * The four states of visibility are `onlyVisible`, `onlyHidden`, `onlyPublic` and `onlyUnlisted`. 
+   * These states are explained thoroughly in the 'types' section of the documentation.
+   * 
+   * @param id - Id of desired space.
+   * @param visibility - Filter for visible state of the space.
+   *
+   * @returns Data about desired space from Subsocial blockchain. If no corresponding space to given `id` and `visibility`, `undefined` is returned.
+   * 
+   */
   async findSpace ({ id, visibility }: FindSpaceQuery): Promise<Space | undefined> {
     return getFirstOrUndefined(await this.findSpaces({ ids: [ id ], visibility }))
   }
 
+  /**
+   * Find and load information about a post from Subsocial blockchain by a given `id` and `visibility` filter.
+   * 
+   * The four states of visibility are `onlyVisible`, `onlyHidden`, `onlyPublic` and `onlyUnlisted`. 
+   * These states are explained thoroughly in the 'types' section of the documentation.
+   * 
+   * @param id - Id of desired post.
+   * @param visibility - Filter for visible state of the post.
+   *
+   * @returns Data about desired post from Subsocial blockchain. If no corresponding post to given `id` and `visibility`, `undefined` is returned.
+   * 
+   */
   async findPost ({ id, visibility }: FindPostQuery): Promise<Post | undefined> {
     return getFirstOrUndefined(await this.findPosts({ ids: [ id ], visibility }))
   }
 
+  /**
+   * Find and load information about a profile from Subsocial blockchain by a given `id`.
+   * 
+   * @param ids - Id of desired profile.
+   *
+   * @returns Data about desired profile from Subsocial blockchain. If no corresponding profile to given `id`, `undefined` is returned.
+   * 
+   */
   async findSocialAccount (id: AnyAccountId): Promise<SocialAccountWithId | undefined> {
     return getFirstOrUndefined(await this.findSocialAccounts([ id ]))
   }
 
+  /**
+   * Find and load information about a reaction from Subsocial blockchain by a given `id`.
+   * 
+   * @param ids - Id of desired reaction.
+   *
+   * @returns Data about desired reaction from Subsocial blockchain. If no corresponding reaction to given `id`, `undefined` is returned.
+   * 
+   */
   async findReaction (id: AnyReactionId): Promise<Reaction | undefined> {
     return getFirstOrUndefined(await this.findReactions([ id ]))
   }
