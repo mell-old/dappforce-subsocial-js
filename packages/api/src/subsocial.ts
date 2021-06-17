@@ -28,7 +28,6 @@ export class SubsocialApi extends BasicSubsocialApi {
    *
    * @returns An array of data about desired spaces aggregated from Subsocial blockchain and IPFS. If no corresponding spaces to given array of `ids`, an empty array is returned.
    * 
-   * @remarks Returns multiple data elements
    */  
   async findPublicSpaces (ids: AnySpaceId[]) {
     return this.findSpaces({ ids, visibility: 'onlyPublic', withContentOnly: true })
@@ -46,7 +45,6 @@ export class SubsocialApi extends BasicSubsocialApi {
    *
    * @returns An array of data about desired spaces aggregated from Subsocial blockchain and IPFS. If no corresponding spaces to given array of `ids`, an empty array is returned.
    * 
-   * @remarks Returns multiple data elements
    */    
   async findUnlistedSpaces (ids: AnySpaceId[]) {
     return this.findSpaces({ ids, visibility: 'onlyUnlisted' })
@@ -68,7 +66,6 @@ export class SubsocialApi extends BasicSubsocialApi {
    *
    * @returns An array of data about desired posts aggregated from Subsocial blockchain and IPFS. If no corresponding posts to given array of `ids`, an empty array is returned.
    * 
-   * @remarks Returns multiple data elements
    */    
   async findPublicPosts (ids: AnySpaceId[]) {
     return this.findPosts({ ids, visibility: 'onlyPublic', withContentOnly: true })
@@ -86,7 +83,6 @@ export class SubsocialApi extends BasicSubsocialApi {
    *
    * @returns An array of data about desired posts aggregated from Subsocial blockchain and IPFS. If no corresponding posts to given array of `ids`, an empty array is returned.
    * 
-   * @remarks Returns multiple data elements
    */  
   async findUnlistedPosts (ids: AnySpaceId[]) {
     return this.findPosts({ ids, visibility: 'onlyUnlisted' })
@@ -131,7 +127,6 @@ export class SubsocialApi extends BasicSubsocialApi {
    *
    * @returns Data about desired space aggregated from blockchain and IPFS. If no corresponding space to given id, `undefined` is returned.
    * 
-   * @remarks Returns single data element
    */  
   async findPublicSpace (id: AnySpaceId) {
     return getFirstOrUndefined(await this.findPublicSpaces([ id ]))
@@ -148,7 +143,6 @@ export class SubsocialApi extends BasicSubsocialApi {
    *
    * @returns Data about a desired space aggregated from blockchain and IPFS. If no corresponding space to given id, `undefined` is returned.
    * 
-   * @remarks Returns single data element
    */
   async findUnlistedSpace (id: AnySpaceId) {
     return getFirstOrUndefined(await this.findUnlistedSpaces([ id ]))
@@ -165,7 +159,6 @@ export class SubsocialApi extends BasicSubsocialApi {
    *
    * @returns Data about desired post aggregated from blockchain and IPFS. If no corresponding post to given id, `undefined` is returned.
    * 
-   * @remarks Returns single data element
    */  
   async findPublicPost (id: AnySpaceId) {
     return getFirstOrUndefined(await this.findPublicPosts([ id ]))
@@ -182,7 +175,6 @@ export class SubsocialApi extends BasicSubsocialApi {
    *
    * @returns Data about desired post aggregated from blockchain and IPFS. If no corresponding post to given id, `undefined` is returned.
    * 
-   * @remarks Returns single data element
    */  
   async findUnlistedPost (id: AnySpaceId) {
     return getFirstOrUndefined(await this.findUnlistedPosts([ id ]))

@@ -156,11 +156,11 @@ export class SubsocialIpfsApi {
    * by a given array of `cids`.
    * 
    * Space information only exists if there is a corresponding JSON file that represents the spaces' content on IPFS.
+   * 
    * @param cids - An array of content ids of desired spaces.
    *
    * @returns An array of data about desired spaces from IPFS. If no corresponding spaces to given array of `ids`, an empty array is returned.
    * 
-   * @remarks Returns multiple data elements
    */
   async findSpaces (cids: IpfsCid[]): Promise<ContentResult<SpaceContent>> {
     return this.getContentArray(cids, 'space')
@@ -171,11 +171,11 @@ export class SubsocialIpfsApi {
    * by a given array of `cids`.
    * 
    * Post information only exists if there is a corresponding JSON file that represents the posts' content on IPFS.
+   * 
    * @param cids - An array of content ids of desired posts.
    *
    * @returns An array of data about desired posts from IPFS. If no corresponding posts to given array of `ids`, an empty array is returned.
    * 
-   * @remarks Returns multiple data elements
    */
   async findPosts (cids: IpfsCid[]): Promise<ContentResult<PostContent>> {
     return this.getContentArray(cids, 'post')
@@ -186,11 +186,11 @@ export class SubsocialIpfsApi {
    * by a given array of `cids`.
    * 
    * Comment information only exists if there is a corresponding JSON file that represents the comments' content on IPFS.
+   * 
    * @param cids - An array of content ids of desired comments.
    *
    * @returns An array of data about desired comments from IPFS. If no corresponding comments to given array of `ids`, an empty array is returned.
    * 
-   * @remarks Returns multiple data elements
    */
   async findComments (cids: IpfsCid[]): Promise<ContentResult<CommentContent>> {
     return this.getContentArray(cids, 'comment')
@@ -202,11 +202,10 @@ export class SubsocialIpfsApi {
    * 
    * Profile information only exists if there is a corresponding JSON file that represents the profiles' content on IPFS.
    *
-   * @param cids - An array of content ids of desired spaces.
+   * @param cids - An array of content ids of desired profiles.
    *
    * @returns An array of data about desired profiles from IPFS. If no corresponding profiles to given array of `ids`, an empty array is returned.
    * 
-   * @remarks Returns multiple data elements
    */
   async findProfiles (cids: IpfsCid[]): Promise<ContentResult<ProfileContent>> {
     return this.getContentArray(cids, 'account')
@@ -225,11 +224,11 @@ export class SubsocialIpfsApi {
    * by a given `cid`.
    * 
    * Space information only exists if there is a corresponding JSON file that represents the spaces' content on IPFS.
+   * 
    * @param cid - Content id of desired space.
    *
    * @returns data about desired space from IPFS. If no corresponding space to given `id`, `undefined` is returned.
    * 
-   * @remarks Returns single data element
    */
   async findSpace (cid: IpfsCid): Promise<SpaceContent | undefined> {
     return this.getContent<SpaceContent>(cid, 'space')
@@ -240,11 +239,11 @@ export class SubsocialIpfsApi {
    * by a given `cid`.
    * 
    * Post information only exists if there is a corresponding JSON file that represents the posts content on IPFS.
+   * 
    * @param cid - Content id of desired post.
    *
    * @returns data about desired post from IPFS. If no corresponding post to given `id`, `undefined` is returned.
    * 
-   * @remarks Returns single data element
    */
   async findPost (cid: IpfsCid): Promise<PostContent | undefined> {
     return this.getContent<PostContent>(cid, 'post')
@@ -255,6 +254,7 @@ export class SubsocialIpfsApi {
    * by a given `cid`.
    * 
    * Comment information only exists if there is a corresponding JSON file that represents the comments content on IPFS.
+   * 
    * @param cid - Content id of desired comment.
    *
    * @returns data about desired comment from IPFS. If no corresponding comments to given `id`, `undefined` is returned.
@@ -270,6 +270,7 @@ export class SubsocialIpfsApi {
    * by a given `cid`.
    * 
    * Profile information only exists if there is a corresponding JSON file that represents the profiles content on IPFS.
+   * 
    * @param cid - Content id of desired profile.
    *
    * @returns data about desired profile from IPFS. If no corresponding profiles to given `id`, `undefined` is returned.
