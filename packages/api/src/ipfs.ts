@@ -258,8 +258,7 @@ export class SubsocialIpfsApi {
    * @param cid - Content id of desired comment.
    *
    * @returns data about desired comment from IPFS. If no corresponding comments to given `id`, `undefined` is returned.
-   * 
-   * @remarks Returns single data element
+   *
    */
   async findComment (cid: IpfsCid): Promise<CommentContent | undefined> {
     return this.getContent<CommentContent>(cid, 'comment')
@@ -275,7 +274,6 @@ export class SubsocialIpfsApi {
    *
    * @returns data about desired profile from IPFS. If no corresponding profiles to given `id`, `undefined` is returned.
    * 
-   * @remarks Returns single data element
    */
   async findProfile (cid: IpfsCid): Promise<ProfileContent | undefined> {
     return this.getContent<ProfileContent>(cid, 'account')
