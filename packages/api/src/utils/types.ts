@@ -10,6 +10,17 @@ export type SubsocialContext = {
   useServer?: UseServerProps
 }
 
+/** 
+ * The four visible state filters correspond to the next conditions:
+ * 
+ * - `onlyVisible` – The `hidden` field on corresponding Substrate struct (e.g. `Space` or `Post`) is `false`.
+ * - `onlyHidden` – The `hidden` field on corresponding Substrate struct (e.g. `Space` or `Post`) is `true`.
+ * - `onlyPublic` – The `hidden` field on corresponding Substrate struct (e.g. `Space` or `Post`) is `false` 
+ * and there is a corresponding JSON file on IPFS.
+ * - `onlyUnlisted` – Either the `hidden` field on corresponding Substrate struct (e.g. `Space` or `Post`) is `true` 
+ * or there is a no corresponding JSON file on IPFS.
+ */
+
 export type Visibility = 'onlyVisible' | 'onlyHidden' | 'onlyPublic' | 'onlyUnlisted'
 
 export type VisibilityFilter = {
