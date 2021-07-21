@@ -1,0 +1,24 @@
+{
+  "id": "subsocial/types/schemas/comment",
+  "title": "Comment",
+  "description": "",
+  "type": "object",
+  "keyTemplate": [
+    {
+      "type": "auto"
+    }
+  ],
+  "definition": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+      "body"
+    ],
+    "properties": {
+      "body": {
+        "type": "string",
+        "description": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "id": "subsocial/types/schemas/onchain/space",
+  "title": "Space Struct",
+  "description": "",
+  "type": "object",
+  "keyTemplate": [
+    {
+      "type": "auto"
+    }
+  ],
+  "definition": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+      "id",
+      "ownerId",
+      "createdBy",
+      "createdAtTime",
+      "createdAtBlock"
+    ],
+    "properties": {
+      "contentId": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "createdAtBlock": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "createdAtTime": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "createdBy": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "followersCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "handle": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "hiddenPostsCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "id": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "isIpfsContent": {
+        "type": "boolean",
+        "description": ""
+      },
+      "isUpdated": {
+        "type": "boolean",
+        "description": ""
+      },
+      "ownerId": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "postsCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "score": {
+        "type": "integer",
+        "description": ""
+      },
+      "updatedAtBlock": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "updatedAtTime": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "updatedBy": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "visiblePostsCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      }
+    }
+  }
+}

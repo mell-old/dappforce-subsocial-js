@@ -1,0 +1,98 @@
+{
+  "id": "subsocial/types/schemas/onchain/post",
+  "title": "POst Struct",
+  "description": "",
+  "type": "object",
+  "keyTemplate": [
+    {
+      "type": "auto"
+    }
+  ],
+  "definition": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+      "id",
+      "ownerId",
+      "createdBy",
+      "createdAtTime",
+      "createdAtBlock"
+    ],
+    "properties": {
+      "contentId": {
+        "type": "string",
+        "description": ""
+      },
+      "createdAtBlock": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "createdAtTime": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "createdBy": {
+        "type": "string",
+        "description": ""
+      },
+      "downvotesCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "hiddenRepliesCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "id": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "isIpfsContent": {
+        "type": "boolean",
+        "description": ""
+      },
+      "isRegularPost": {
+        "type": "boolean",
+        "description": ""
+      },
+      "owner": {
+        "type": "string",
+        "description": ""
+      },
+      "repliesCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "score": {
+        "type": "integer",
+        "description": ""
+      },
+      "sharesCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "spaceId": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "upvotesCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      },
+      "visibleRepliesCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": ""
+      }
+    }
+  }
+}
